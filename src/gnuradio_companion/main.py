@@ -8,10 +8,7 @@ import argparse
 import logging
 import sys
 
-import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('PangoCairo', '1.0')
-from gi.repository import Gtk
+from .env_checks import import_gnuradio, load_gtk_bindings, check_blocks_path
 
 
 VERSION_AND_DISCLAIMER_TEMPLATE = """\
@@ -39,6 +36,10 @@ def main():
     parser.add_argument(
         '--log', choices=['debug', 'info', 'warning', 'error', 'critical'], default='warning')
     args = parser.parse_args()
+
+    load_gtk_bindings(error_exit=die)
+    check_blocks_path(error_exit=die)
+    gr = import_gnuradio(error_exit=die)
 
     # Enable logging
     # Note: All other modules need to use the same '<prefix>.<module>' convention.
@@ -94,3 +95,28 @@ def main():
     app = Application(args.flow_graphs, platform)
     log.debug("Running")
     sys.exit(app.run())
+
+
+def die(error, message):
+    msg = "{0}\n\n({1})".format(message, error)
+    try:
+        import gi
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gtk
+        d = Gtk.MessageDialog(
+            message_type=Gtk.MessageType.ERROR,
+            buttons=Gtk.ButtonsType.CLOSE,
+            text=msg,
+        )
+        d.set_title(type(error).__name__)
+        d.run()
+        sys.exit(1)
+    except ImportError:
+        sys.exit(type(error).__name__ + '\n\n' + msg)
+    except Exception as _exception:
+        print(
+            "While trying to display an error message, another error occurred",
+            file=sys.stderr)
+        print(_exception, file=sys.stderr)
+        print("The original error message follows.", file=sys.stderr)
+        sys.exit(type(error).__name__ + '\n\n' + msg)

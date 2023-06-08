@@ -10,10 +10,15 @@ import argparse
 import os
 import subprocess
 
-from gnuradio import gr
-
 from .core import Messages
 from .core.platform import Platform
+
+from .env_checks import import_gnuradio
+
+
+def die(error, message):
+    msg = "{0}\n\n({1})".format(message, error)
+    exit(type(error).__name__ + '\n\n' + msg)
 
 
 def argument_parser():
@@ -33,6 +38,7 @@ def argument_parser():
 
 def main(args=None):
     args = args or argument_parser().parse_args()
+    gr =import_gnuradio(error_exit=die)
 
     platform = Platform(
         name='GNU Radio Companion Compiler',

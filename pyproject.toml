@@ -24,3 +24,9 @@ dependencies = [
     "numpy",
     "jsonschema"
 ]
+
+[project.scripts]
+grcc = "gnuradio_companion.compiler:main"
+
+[project.gui-scripts]
+gnuradio-companion = "gnuradio_companion.main:main"
