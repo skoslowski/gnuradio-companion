@@ -1,0 +1,26 @@
+[build-system]
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "gnuradio-companion"
+version = "3.9.2"
+authors = []
+description = "GNU Radio Companion"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = []
+
+dependencies = [
+    "PyYAML >= 3.11",
+    "Mako >= 1.1.0",
+    "PyGObject >= 2.28.6",
+    # "Gtk (GI) >= 3.10.8"
+    # "import gi; gi.require_version('Gtk', '3.0'); \
+    # "Cairo (GI) >= 1.0"
+    # "import gi; gi.require_foreign('cairo', 'Context')"  # Cairo 1.13.0
+    # "PangoCairo (GI) >= 1.0"
+    # "import gi; gi.require_version('PangoCairo', '1.0')"  # pangocairo 1.36.3
+    "numpy",
+    "jsonschema"
+]
