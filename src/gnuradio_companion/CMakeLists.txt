@@ -5,62 +5,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-########################################################################
-# Setup dependencies
-########################################################################
-include(GrPython)
-
-message(STATUS "")
-
-GR_PYTHON_CHECK_MODULE_RAW(
-    "PyYAML >= 3.11"
-    "import yaml; assert yaml.__version__ >= '3.11'"
-    PYYAML_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE(
-    "mako >= ${GR_MAKO_MIN_VERSION}"
-    mako
-    "LooseVersion(mako.__version__) >= LooseVersion('${GR_MAKO_MIN_VERSION}')"
-    MAKO_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE_RAW(
-    "pygobject >= 2.28.6"
-    "import gi; assert gi.version_info >= (2, 28, 6)"
-    PYGI_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE_RAW(
-    "Gtk (GI) >= 3.10.8"
-    "import gi; gi.require_version('Gtk', '3.0'); \
-     from gi.repository import Gtk; Gtk.check_version(3, 10, 8)"
-    GTK_GI_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE_RAW(
-    "Cairo (GI) >= 1.0"
-    "import gi; gi.require_foreign('cairo', 'Context')"  # Cairo 1.13.0
-    CAIRO_GI_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE_RAW(
-    "PangoCairo (GI) >= 1.0"
-    "import gi; gi.require_version('PangoCairo', '1.0')"  # pangocairo 1.36.3
-    PANGOCAIRO_GI_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE_RAW(
-    "numpy"
-    "import numpy"
-    NUMPY_FOUND
-)
-
-GR_PYTHON_CHECK_MODULE_RAW(
-  "jsonschema"
-  "import jsonschema"
-  JSONSCHEMA_FOUND
-)
 
 ########################################################################
 # Register component
@@ -179,8 +123,6 @@ endif(WIN32)
 ########################################################################
 # Add subdirectories
 ########################################################################
-add_subdirectory(blocks)
 add_subdirectory(scripts)
-add_subdirectory(tests)
 
 endif(ENABLE_GRC)

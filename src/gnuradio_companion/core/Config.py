@@ -6,7 +6,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 
 import os
-from os.path import expanduser, normpath, expandvars, exists
+from os.path import expanduser, normpath, expandvars, exists, dirname
 from collections import OrderedDict
 
 from . import Constants
@@ -37,6 +37,7 @@ class Config(object):
             os.environ.get('GRC_BLOCKS_PATH', ''),
             self._gr_prefs.get_string('grc', 'local_blocks_path', ''),
             self._gr_prefs.get_string('grc', 'global_blocks_path', ''),
+            builtin_blocks_dir(),
         )
 
         collected_paths = sum((paths.split(os.pathsep)
@@ -58,6 +59,10 @@ class Config(object):
             os.path.join(self.hier_block_lib_dir, 'default_flow_graph.grc')
         )
         return user_default if exists(user_default) else Constants.DEFAULT_FLOW_GRAPH
+
+def builtin_blocks_dir():
+    pkg_dir = dirname(dirname(__file__))
+    return pkg_dir + "/blocks"
 
 
 class DummyPrefs(object):
